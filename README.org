@@ -1,0 +1,76 @@
+#+TITLE: Federated learning with Rust
+#+OPTIONS: num:t
+#+startup: content
+#+STARTUP: inlineimages
+#+STARTUP: beamer
+#+OPTIONS: toc:nil
+* Federated learning with Rust
+This project is going to create a federated learning framework with rust. Known for its safety, Rust provides a terrific playground for federated learning framework. Our propose is to design a architechture, which can combine decenterlized learning and cross-Silo learning use cases. At the same time, privacy problem and poisoning attack will also be token into consideration. This project has been divided into front-end and back-end parts, both parts will be wrote in Rust in REST-form for communication.  [[./myfeder.drawio.png][federated learning architechture]].
+
+:PROPERTIES:
+:BEAMER_col: 0.6
+:BEAMER_env: block
+:ORDERED:  t
+:END:
+[[./myfeder.drawio.png]]
+* Database
+- [-] Process
+  - [X] Cloud machine in DWDG
+  - [X] Port and security group configuration, install postgresql and  set password
+  - [X] Configuration: listen_addresses and hostssl for remotely and ssl connection
+  - [ ]  Save ORM instance from back-end and front-end
+  
+* ONNX
+We  want to save ONNX file according to different projects. system, there are three options.
+*** use our postgresql, this offer us fast load performance
+***** DONE with  [[https://github.com/kibae/pg_onnx][pg_onnx]]
+-  No CMAKE_CXX_COMPILER could be found.  -> sudo apt-get install -y build-essential
+-  Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) -> sudo apt-get install pkg-config
+-  This SQL extenation save ONNX file in postgresql, offer us it reference for querying, but no API for reading ONNX back to disk.
+
+***** DONE with postgresql bytes attribute
+- save ONNX file with bytea attribute
+  #+begin_src sql
+    CREATE TABLE onnxsets (
+          id SERIAL PRIMARY KEY,
+          onnxfile bytea
+    );
+  #+end_src
+- limited to 1 GB, enough for our onnx file, careful about the permission and ownership of ONNX file for postgresql.
+- save file with pg_read_binary_file, and read it out with \copy.
+  #+begin_src sql
+  insert into onnxsets (onnxfile ) values (pg_read_binary_file('/home/postgres/resnet50_Opset16.onnx')::bytea);
+  \copy (select onnxfile from onnxsets where id = 8) to '/home/postgres/testonnx.onnx' (FORMAT binary) ;
+  #+end_src
+- But with exra header and footer information, which  will increase the size about 30 bytes, [[https://www.postgresql.org/docs/current/sql-copy.html][postgresql copy manual]].
+- Those information destroy the readability of ONNX file, such as in https://netron.app/ we get the error for reading returned ONNX file from postgresql.
+  #+begin_src text
+    Error loading model. Unsupported file content (5047434f50590aff0d0a000000000000) for extension '.onnx'.
+  #+end_src
+- Tried   [[https://github.com/csimsek/pgsql-fio/][pgsql-fio extenation]], still does not work.
+- Up to now, I still do not find a way to get rid of those header and footer information.
+  
+***** TODO with postgresql BLOB  attribute
+
+*** TODO use MongoDB
+*** TODO use IPFS
+if the  newest onnx is always designed to be available for all visitors, deploy onnx file in IPFS system would be a great idea.
+
+*** TODO use host file system
+If we do not benefit enough for performance with above setting, save the file in localhost file system with a unique name, and  save this path + unique name in postgresql as string.
+
+* User mode
+This project is the front-end project for user, 
+
+- [x] User register,  Authentication with JWT
+
+  
+
+* Agency mode
+this project can be treated as Back-end system for User mode.
+
+
+
+
+
+

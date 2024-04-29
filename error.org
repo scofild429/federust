@@ -1,0 +1,9 @@
+* No CMAKE_CXX_COMPILER could be found.  -> sudo apt-get install -y build-essential
+*   Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) -> sudo apt-get install pkg-config
+*   Postgres bytes can not get rid of header of copy:
+  #+begin_src sql
+    insert into onnxsets (onnxfile ) values (pg_read_binary_file('/home/postgres/resnet50_Opset16.onnx')::bytea);
+    \copy (select onnxfile from onnxsets where id = 8) to '/home/postgres/testonnx.onnx' (FORMAT binary) ;
+  #+end_src
+  It always save the file with header, PGCOPY � [[https://www.postgresql.org/docs/current/sql-copy.html][postgres] copy ]]
+
