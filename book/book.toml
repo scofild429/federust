@@ -1,0 +1,6 @@
+[book]
+authors = ["silinzhao"]
+language = "en"
+multilingual = false
+src = "src"
+title = "liberal federated learning with Rust"
