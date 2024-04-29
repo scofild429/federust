@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>ONNX - liberal federated learning with Rust</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="Database.html"><strong aria-hidden="true">2.</strong> Database</a></li><li class="chapter-item expanded "><a href="ONNX.html" class="active"><strong aria-hidden="true">3.</strong> ONNX</a></li><li class="chapter-item expanded "><a href="Interface.html"><strong aria-hidden="true">4.</strong> Interface</a></li><li class="chapter-item expanded "><a href="Client.html"><strong aria-hidden="true">5.</strong> Client</a></li><li class="chapter-item expanded "><a href="Server.html"><strong aria-hidden="true">6.</strong> Server</a></li><li class="chapter-item expanded "><a href="Function.html"><strong aria-hidden="true">7.</strong> Function</a></li><li class="chapter-item expanded "><a href="Robustness.html"><strong aria-hidden="true">8.</strong> Robustness</a></li><li class="chapter-item expanded "><a href="Privacy.html"><strong aria-hidden="true">9.</strong> Privacy</a></li><li class="chapter-item expanded "><a href="Usecases.html"><strong aria-hidden="true">10.</strong> Usecases</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">liberal federated learning with Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="save-onnx"><a class="header" href="#save-onnx">Save ONNX</a></h1>
+<h2 id="use--postgresql"><a class="header" href="#use--postgresql">use  postgresql</a></h2>
+<h3 id="done-with--pg_onnx"><a class="header" href="#done-with--pg_onnx">DONE with  <a href="https://github.com/kibae/pg_onnx">pg_onnx</a></a></h3>
+<p>1  No CMAKE_CXX_COMPILER could be found.  -&gt; sudo apt-get install -y build-essential
+2  Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) -&gt; sudo apt-get install pkg-config
+3  This SQL extenation can save ONNX file in postgresql,  and offer us its reference for querying, but no API for reading ONNX back.</p>
+<h3 id="done-with-postgresql-bytes-attribute"><a class="header" href="#done-with-postgresql-bytes-attribute">DONE with postgresql bytes attribute</a></h3>
+<ul>
+<li>
+<p>save ONNX file with bytea attribute
+#+begin_src sql
+CREATE TABLE onnxsets (
+id SERIAL PRIMARY KEY,
+onnxfile bytea
+);
+#+end_src</p>
+</li>
+<li>
+<p>limited to 1 GB, enough for our onnx file, be careful about the permission and ownership of ONNX file for postgresql.</p>
+</li>
+<li>
+<p>save file with pg_read_binary_file, and read it out with copy, but with exra header and footer information, which increase the size about 30 bytes, <a href="https://www.postgresql.org/docs/current/sql-copy.html">postgresql copy manual</a>.</p>
+<pre><code class="language-sql">insert into onnxsets (onnxfile ) values (pg_read_binary_file('/home/postgres/resnet50_Opset16.onnx')::bytea);
+\copy (select onnxfile from onnxsets where id = 8) to '/home/postgres/testonnx.onnx' (FORMAT binary) ;
+</code></pre>
+</li>
+<li>
+<p>Those information destroy the readability of ONNX file, such as in <a href="https://netron.app/">https://netron.app/</a> we get the error for reading returned ONNX file from postgresql.</p>
+<pre><code>Error loading model. Unsupported file content (5047434f50590aff0d0a000000000000) for extension '.onnx'.
+</code></pre>
+</li>
+<li>
+<p>Tried  <a href="https://github.com/csimsek/pgsql-fio/">pgsql-fio extenation</a>, still does not work.  Up to now, I still do not find ang way to get rid of those header and footer information.</p>
+</li>
+</ul>
+<h3 id="todo-with-postgresql-blob--attribute"><a class="header" href="#todo-with-postgresql-blob--attribute">TODO with postgresql BLOB  attribute</a></h3>
+<h2 id="todo-use-mongodb"><a class="header" href="#todo-use-mongodb">TODO use MongoDB</a></h2>
+<h2 id="todo-use-localhost-file-system"><a class="header" href="#todo-use-localhost-file-system">TODO use localhost file system</a></h2>
+<p>If we do not benefit enough for performance with saving ONNX in database, we can save ONNX file in localhost file system with a unique name, and then save this path + unique name in postgresql as string.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Database.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="Interface.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Database.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="Interface.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
