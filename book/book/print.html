@@ -177,6 +177,13 @@
                         <h1 id="propose"><a class="header" href="#propose">Propose</a></h1>
 <p>This project is going to create a federated learning framework with Rust. Known for its safety, Rust provides a terrific playground for our propose. Our propose is to design a architecture, which can combine decenterlized learning and cross-Silo learning use cases. At the same time, privacy problem and poisoning attack will also be token into consideration. This project has been divided into three modules. The communication can be implemented with REST-form between different ports OR with WebAssembly.</p>
 <p><img src="./feder.png" alt=" Liberal Federated learning" /></p>
+<h1 id="implementation"><a class="header" href="#implementation">Implementation</a></h1>
+<p>There are two different designs has been mentioned, RestAPI with mirco-service and serverless WebAssembly.</p>
+<h2 id="restapi-with-mirco-service"><a class="header" href="#restapi-with-mirco-service">RestAPI with mirco-service</a></h2>
+<p>Our three modules must be deployed in different ports. They communicate with http requests.</p>
+<h2 id="serverless-webassembly"><a class="header" href="#serverless-webassembly">Serverless WebAssembly</a></h2>
+<p>The Interface module will be implemented with Vue and TS, Client module and Server module will be wrote in RUST at first, and the function from RUST will be compiled into WebAssembly and exposed to TS.</p>
+<p>Because of the rich ecosystem of Python for AI, we want allow our system also be able to run Python code, for training and ONNX pool aggregation. We have two options, compile Python into WebAssembly and call python from Rust with Foreign Function Interface. Which of them works and how they performance comes later.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="todo-list"><a class="header" href="#todo-list">Todo list</a></h1>
 <ul>
 <li><input disabled="" type="checkbox" checked=""/>
@@ -323,20 +330,56 @@ onnxfile bytea
 <p>If they are poisoned ONNX files has been pushed into the ONNX pool, validation data can select them out.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="privacy"><a class="header" href="#privacy">Privacy</a></h1>
 <p>All pushed ONNX file in ONNX pool don't contain any meta information. No matter the ONNX file is from different user, or multiple push from the same user, it's hard to reverse the contained information of user's local data.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="fiberal-use-cases"><a class="header" href="#fiberal-use-cases">Fiberal use cases</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fiberal-federated-learning-use-cases"><a class="header" href="#fiberal-federated-learning-use-cases">Fiberal federated learning use cases</a></h1>
+<p>There we are talking about the activities in one project. Use has to choose one of the following use cause for project initialization.</p>
 <h2 id="single-client-module"><a class="header" href="#single-client-module">Single client module</a></h2>
+<p>This can be used for algorithmus testing in single machine.</p>
+<h3 id="function-parts"><a class="header" href="#function-parts">Function parts</a></h3>
 <ul>
-<li>This can be just for algorithmus testing in single machine.</li>
+<li>A</li>
+<li>B</li>
+<li>C</li>
+<li>D</li>
+<li>E</li>
+<li>F</li>
+<li>J</li>
 </ul>
 <h2 id="multiple-client-modules"><a class="header" href="#multiple-client-modules">Multiple client modules</a></h2>
-<h2 id="single-agency-module"><a class="header" href="#single-agency-module">Single agency module</a></h2>
-<h2 id="multiple-agency-modules"><a class="header" href="#multiple-agency-modules">Multiple agency modules</a></h2>
-<pre><code>Pure P2P decenterlized learning architecture
-</code></pre>
+<p>this is for centerilized Cross-Silo learning architecture. All users start with the same ONNX file and develop independently.</p>
+<h3 id="function-parts-1"><a class="header" href="#function-parts-1">Function parts</a></h3>
+<ul>
+<li>A</li>
+<li>B</li>
+<li>C</li>
+<li>D</li>
+<li>E</li>
+<li>F</li>
+<li>J</li>
+</ul>
+<h2 id="single-server-module"><a class="header" href="#single-server-module">Single server module</a></h2>
+<p>This can be used for hosting the well-trained ONNX file, like ONNX Zoo.</p>
+<h3 id="function-parts-2"><a class="header" href="#function-parts-2">Function parts</a></h3>
+<ul>
+<li>C</li>
+</ul>
+<h2 id="multiple-server-modules"><a class="header" href="#multiple-server-modules">Multiple server modules</a></h2>
+<p>Multiple single server module for different ONNX version. This is a kind of pure P2P decenterlized learning architecture.</p>
+<h3 id="function-parts-3"><a class="header" href="#function-parts-3">Function parts</a></h3>
+<ul>
+<li>C</li>
+</ul>
 <h2 id="single-client-module-and-agency-module"><a class="header" href="#single-client-module-and-agency-module">Single client module and agency module</a></h2>
+<p>For modul testing, but not sharing, this is Cross-Silo learning architecture.  User deploy this system and run it locally.</p>
+<h3 id="function-parts-4"><a class="header" href="#function-parts-4">Function parts</a></h3>
+<ul>
+<li>All</li>
+</ul>
 <h2 id="multiple-client-module-and-agency-module"><a class="header" href="#multiple-client-module-and-agency-module">Multiple client module and agency module</a></h2>
-<pre><code>Cross-Silo learning architecture
-</code></pre>
+<p>Hyper-federated learning architecture. How the users trust ONNX file is totally free. This can build all possibilities.</p>
+<h3 id="function-parts-5"><a class="header" href="#function-parts-5">Function parts</a></h3>
+<ul>
+<li>All</li>
+</ul>
 
                     </main>
 
