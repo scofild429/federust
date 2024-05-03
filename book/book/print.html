@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="Database.html"><strong aria-hidden="true">2.</strong> Database</a></li><li class="chapter-item expanded "><a href="ONNX.html"><strong aria-hidden="true">3.</strong> ONNX</a></li><li class="chapter-item expanded "><a href="Interface.html"><strong aria-hidden="true">4.</strong> Interface</a></li><li class="chapter-item expanded "><a href="Client.html"><strong aria-hidden="true">5.</strong> Client</a></li><li class="chapter-item expanded "><a href="Server.html"><strong aria-hidden="true">6.</strong> Server</a></li><li class="chapter-item expanded "><a href="Function.html"><strong aria-hidden="true">7.</strong> Function</a></li><li class="chapter-item expanded "><a href="Robustness.html"><strong aria-hidden="true">8.</strong> Robustness</a></li><li class="chapter-item expanded "><a href="Privacy.html"><strong aria-hidden="true">9.</strong> Privacy</a></li><li class="chapter-item expanded "><a href="Usecases.html"><strong aria-hidden="true">10.</strong> Usecases</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Function.html"><strong aria-hidden="true">1.1.</strong> Function</a></li><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">1.2.</strong> Initialization</a></li></ol></li><li class="chapter-item expanded "><a href="Development.html"><strong aria-hidden="true">2.</strong> Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Interface.html"><strong aria-hidden="true">2.1.</strong> Interface</a></li><li class="chapter-item expanded "><a href="Client.html"><strong aria-hidden="true">2.2.</strong> Client</a></li><li class="chapter-item expanded "><a href="Server.html"><strong aria-hidden="true">2.3.</strong> Server</a></li><li class="chapter-item expanded "><a href="Database.html"><strong aria-hidden="true">2.4.</strong> Database</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ONNX.html"><strong aria-hidden="true">2.4.1.</strong> ONNX</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="Robustness.html"><strong aria-hidden="true">3.</strong> Robustness</a></li><li class="chapter-item expanded "><a href="Privacy.html"><strong aria-hidden="true">4.</strong> Privacy</a></li><li class="chapter-item expanded "><a href="Usecases.html"><strong aria-hidden="true">5.</strong> Usecases</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -184,57 +184,41 @@
 <h2 id="serverless-webassembly"><a class="header" href="#serverless-webassembly">Serverless WebAssembly</a></h2>
 <p>The Interface module will be implemented with Vue and TS, Client module and Server module will be wrote in RUST at first, and the function from RUST will be compiled into WebAssembly and exposed to TS.</p>
 <p>Because of the rich ecosystem of Python for AI, we want allow our system also be able to run Python code, for training and ONNX pool aggregation. We have two options, compile Python into WebAssembly and call python from Rust with Foreign Function Interface. Which of them works and how they performance comes later.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-list"><a class="header" href="#todo-list">Todo list</a></h1>
-<ul>
-<li><input disabled="" type="checkbox" checked=""/>
-Cloud machine in DWDG</li>
-<li><input disabled="" type="checkbox" checked=""/>
-Ports and security group configuration, install postgresql and  set password</li>
-<li><input disabled="" type="checkbox" checked=""/>
-Configuration: listen_addresses and hostssl for remotely and ssl connection</li>
-<li><input disabled="" type="checkbox"/>
-Save ORM instance</li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="save-onnx"><a class="header" href="#save-onnx">Save ONNX</a></h1>
-<h2 id="use--postgresql"><a class="header" href="#use--postgresql">use  postgresql</a></h2>
-<h3 id="done-with--pg_onnx"><a class="header" href="#done-with--pg_onnx">DONE with  <a href="https://github.com/kibae/pg_onnx">pg_onnx</a></a></h3>
-<p>1  No CMAKE_CXX_COMPILER could be found.  -&gt; sudo apt-get install -y build-essential
-2  Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) -&gt; sudo apt-get install pkg-config
-3  This SQL extenation can save ONNX file in postgresql,  and offer us its reference for querying, but no API for reading ONNX back.</p>
-<h3 id="done-with-postgresql-bytes-attribute"><a class="header" href="#done-with-postgresql-bytes-attribute">DONE with postgresql bytes attribute</a></h3>
-<ul>
-<li>
-<p>save ONNX file with bytea attribute
-#+begin_src sql
-CREATE TABLE onnxsets (
-id SERIAL PRIMARY KEY,
-onnxfile bytea
-);
-#+end_src</p>
-</li>
-<li>
-<p>limited to 1 GB, enough for our onnx file, be careful about the permission and ownership of ONNX file for postgresql.</p>
-</li>
-<li>
-<p>save file with pg_read_binary_file, and read it out with copy, but with exra header and footer information, which increase the size about 30 bytes, <a href="https://www.postgresql.org/docs/current/sql-copy.html">postgresql copy manual</a>.</p>
-<pre><code class="language-sql">insert into onnxsets (onnxfile ) values (pg_read_binary_file('/home/postgres/resnet50_Opset16.onnx')::bytea);
-\copy (select onnxfile from onnxsets where id = 8) to '/home/postgres/testonnx.onnx' (FORMAT binary) ;
-</code></pre>
-</li>
-<li>
-<p>Those information destroy the readability of ONNX file, such as in <a href="https://netron.app/">https://netron.app/</a> we get the error for reading returned ONNX file from postgresql.</p>
-<pre><code>Error loading model. Unsupported file content (5047434f50590aff0d0a000000000000) for extension '.onnx'.
-</code></pre>
-</li>
-<li>
-<p>Tried  <a href="https://github.com/csimsek/pgsql-fio/">pgsql-fio extenation</a>, still does not work.  Up to now, I still do not find ang way to get rid of those header and footer information.</p>
-</li>
-</ul>
-<h3 id="todo-with-postgresql-blob--attribute"><a class="header" href="#todo-with-postgresql-blob--attribute">TODO with postgresql BLOB  attribute</a></h3>
-<h2 id="todo-use-mongodb"><a class="header" href="#todo-use-mongodb">TODO use MongoDB</a></h2>
-<h2 id="todo-use-localhost-file-system"><a class="header" href="#todo-use-localhost-file-system">TODO use localhost file system</a></h2>
-<p>If we do not benefit enough for performance with saving ONNX in database, we can save ONNX file in localhost file system with a unique name, and then save this path + unique name in postgresql as string.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="interface-module"><a class="header" href="#interface-module">Interface module</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="function"><a class="header" href="#function">Function</a></h1>
+<p>This chapter only describes the function of learning part. They are all marked to the corresponding part in archtechture graph.</p>
+<h2 id="a-send-request-to-initialize-onnx"><a class="header" href="#a-send-request-to-initialize-onnx">A: Send request to initialize ONNX</a></h2>
+<p>As a project is going to be build, we send this require to server module, ask for initial ONNX file.</p>
+<h2 id="b-initialization-of-trusted-onnx-in-server-module"><a class="header" href="#b-initialization-of-trusted-onnx-in-server-module">B: Initialization of trusted ONNX in Server module</a></h2>
+<p>Even in some projects only Client module is deployed, the trusted ONNX part will still be initialized in Server module, but only this part. To initialize the trusted ONNX part, multiple source options are allowed, such as from ONNX Zoo, or from some exposed trusted ONNX part in other project.</p>
+<h2 id="c-assigne-trusted-onnx-to-init-onnx"><a class="header" href="#c-assigne-trusted-onnx-to-init-onnx">C: Assigne trusted ONNX to Init ONNX</a></h2>
+<p>Pull the newest trusted ONNX file from Server module to Init. ONNX in Client module. This step can be used as the response of function <span style="color:blue"><em>A</em></span>, also can be used for updating Init ONNX file for next training.</p>
+<h2 id="d-training-model-with-local-data"><a class="header" href="#d-training-model-with-local-data">D: Training model with local data</a></h2>
+<p>lauching model from ONNX, and training with local data. After each training task, our model will be saved as updated ONNX,</p>
+<h2 id="e-init-onnx-for-application"><a class="header" href="#e-init-onnx-for-application">E: Init ONNX for application</a></h2>
+<p>If the Init ONNX is good enough, or project is not going to train any local data, we can launch the model from Init ONNX for Application.</p>
+<h2 id="f-updated-onnx-for-application"><a class="header" href="#f-updated-onnx-for-application">F: Updated ONNX for application</a></h2>
+<p>When the model has been trained with local data, it should have different performance for application.</p>
+<h2 id="j-continual-training"><a class="header" href="#j-continual-training">J: Continual training</a></h2>
+<p>If our model performs not enough good, we train it again and again, and replace updated ONNX in place.</p>
+<h2 id="g-push-updated-onnx-to-server-module"><a class="header" href="#g-push-updated-onnx-to-server-module">G: Push updated ONNX to server module</a></h2>
+<p>According to the project function, we are able to push the updated ONNX to ONNX pool in server module.</p>
+<h2 id="k-onnx-pool-function"><a class="header" href="#k-onnx-pool-function">K: ONNX pool function</a></h2>
+<p>The ONNX pool of each project can only contain certainly number of ONNX files. They can be aggreated, combined. For flexiblity, We hope multiple language can be supported, such as Python.</p>
+<h2 id="h-update-trusted-onnx"><a class="header" href="#h-update-trusted-onnx">H: Update trusted ONNX</a></h2>
+<p>with aggreatation, combination we can update the trusted ONNX in server module. Before replacing the trusted ONNX, we can use validation dataset to confirm the performance of our new model.</p>
+<h2 id="i-drop-onnx-from-onnx-pool"><a class="header" href="#i-drop-onnx-from-onnx-pool">I: Drop ONNX from ONNX pool</a></h2>
+<p>Validation dataset can be used to select some bad or poisoning ONNX and drop them.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="propose-1"><a class="header" href="#propose-1">Propose</a></h1>
+<p>This project is going to create a federated learning framework with Rust. Known for its safety, Rust provides a terrific playground for our propose. Our propose is to design a architecture, which can combine decenterlized learning and cross-Silo learning use cases. At the same time, privacy problem and poisoning attack will also be token into consideration. This project has been divided into three modules. The communication can be implemented with REST-form between different ports OR with WebAssembly.</p>
+<p><img src="./feder.png" alt=" Liberal Federated learning" /></p>
+<h1 id="implementation-1"><a class="header" href="#implementation-1">Implementation</a></h1>
+<p>There are two different designs has been mentioned, RestAPI with mirco-service and serverless WebAssembly.</p>
+<h2 id="restapi-with-mirco-service-1"><a class="header" href="#restapi-with-mirco-service-1">RestAPI with mirco-service</a></h2>
+<p>Our three modules must be deployed in different ports. They communicate with http requests.</p>
+<h2 id="serverless-webassembly-1"><a class="header" href="#serverless-webassembly-1">Serverless WebAssembly</a></h2>
+<p>The Interface module will be implemented with Vue and TS, Client module and Server module will be wrote in RUST at first, and the function from RUST will be compiled into WebAssembly and exposed to TS.</p>
+<p>Because of the rich ecosystem of Python for AI, we want allow our system also be able to run Python code, for training and ONNX pool aggregation. We have two options, compile Python into WebAssembly and call python from Rust with Foreign Function Interface. Which of them works and how they performance comes later.</p>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="interface-module"><a class="header" href="#interface-module">Interface module</a></h1>
 <p>We are going to use Vue with Typescript  and bootstrap to help us build our interface module. Interface module interacts with client module and agency module through Rest API OR Webassembly. Users register at first, after login through authentication, create project, assign authorization, then users can start their project.</p>
 <ul>
 <li>Register :: A1</li>
@@ -301,30 +285,56 @@ onnxfile bytea
 </ul>
 </li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="function"><a class="header" href="#function">Function</a></h1>
-<p>This chapter only describes the function of learning part. They are all marked to the corresponding part in archtechture graph.</p>
-<h2 id="a-send-request-to-initialize-onnx"><a class="header" href="#a-send-request-to-initialize-onnx">A: Send request to initialize ONNX</a></h2>
-<p>As a project is going to be build, we send this require to server module, ask for initial ONNX file.</p>
-<h2 id="b-initialization-of-trusted-onnx-in-server-module"><a class="header" href="#b-initialization-of-trusted-onnx-in-server-module">B: Initialization of trusted ONNX in Server module</a></h2>
-<p>Even in some projects only Client module is deployed, the trusted ONNX part will still be initialized in Server module, but only this part. To initialize the trusted ONNX part, multiple source options are allowed, such as from ONNX Zoo, or from some exposed trusted ONNX part in other project.</p>
-<h2 id="c-assigne-trusted-onnx-to-init-onnx"><a class="header" href="#c-assigne-trusted-onnx-to-init-onnx">C: Assigne trusted ONNX to Init ONNX</a></h2>
-<p>Pull the newest trusted ONNX file from Server module to Init. ONNX in Client module. This step can be used as the response of function <span style="color:blue"><em>A</em></span>, also can be used for updating Init ONNX file for next training.</p>
-<h2 id="d-training-model-with-local-data"><a class="header" href="#d-training-model-with-local-data">D: Training model with local data</a></h2>
-<p>lauching model from ONNX, and training with local data. After each training task, our model will be saved as updated ONNX,</p>
-<h2 id="e-init-onnx-for-application"><a class="header" href="#e-init-onnx-for-application">E: Init ONNX for application</a></h2>
-<p>If the Init ONNX is good enough, or project is not going to train any local data, we can launch the model from Init ONNX for Application.</p>
-<h2 id="f-updated-onnx-for-application"><a class="header" href="#f-updated-onnx-for-application">F: Updated ONNX for application</a></h2>
-<p>When the model has been trained with local data, it should have different performance for application.</p>
-<h2 id="j-continual-training"><a class="header" href="#j-continual-training">J: Continual training</a></h2>
-<p>If our model performs not enough good, we train it again and again, and replace updated ONNX in place.</p>
-<h2 id="g-push-updated-onnx-to-server-module"><a class="header" href="#g-push-updated-onnx-to-server-module">G: Push updated ONNX to server module</a></h2>
-<p>According to the project function, we are able to push the updated ONNX to ONNX pool in server module.</p>
-<h2 id="k-onnx-pool-function"><a class="header" href="#k-onnx-pool-function">K: ONNX pool function</a></h2>
-<p>The ONNX pool of each project can only contain certainly number of ONNX files. They can be aggreated, combined. For flexiblity, We hope multiple language can be supported, such as Python.</p>
-<h2 id="h-update-trusted-onnx"><a class="header" href="#h-update-trusted-onnx">H: Update trusted ONNX</a></h2>
-<p>with aggreatation, combination we can update the trusted ONNX in server module. Before replacing the trusted ONNX, we can use validation dataset to confirm the performance of our new model.</p>
-<h2 id="i-drop-onnx-from-onnx-pool"><a class="header" href="#i-drop-onnx-from-onnx-pool">I: Drop ONNX from ONNX pool</a></h2>
-<p>Validation dataset can be used to select some bad or poisoning ONNX and drop them.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-list"><a class="header" href="#todo-list">Todo list</a></h1>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Cloud machine in DWDG</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Ports and security group configuration, install postgresql and  set password</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Configuration: listen_addresses and hostssl for remotely and ssl connection</li>
+<li><input disabled="" type="checkbox"/>
+Save ORM instance</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="save-onnx"><a class="header" href="#save-onnx">Save ONNX</a></h1>
+<h2 id="use--postgresql"><a class="header" href="#use--postgresql">use  postgresql</a></h2>
+<h3 id="done-with--pg_onnx"><a class="header" href="#done-with--pg_onnx">DONE with  <a href="https://github.com/kibae/pg_onnx">pg_onnx</a></a></h3>
+<p>1  No CMAKE_CXX_COMPILER could be found.  -&gt; sudo apt-get install -y build-essential
+2  Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) -&gt; sudo apt-get install pkg-config
+3  This SQL extenation can save ONNX file in postgresql,  and offer us its reference for querying, but no API for reading ONNX back.</p>
+<h3 id="done-with-postgresql-bytes-attribute"><a class="header" href="#done-with-postgresql-bytes-attribute">DONE with postgresql bytes attribute</a></h3>
+<ul>
+<li>
+<p>save ONNX file with bytea attribute
+#+begin_src sql
+CREATE TABLE onnxsets (
+id SERIAL PRIMARY KEY,
+onnxfile bytea
+);
+#+end_src</p>
+</li>
+<li>
+<p>limited to 1 GB, enough for our onnx file, be careful about the permission and ownership of ONNX file for postgresql.</p>
+</li>
+<li>
+<p>save file with pg_read_binary_file, and read it out with copy, but with exra header and footer information, which increase the size about 30 bytes, <a href="https://www.postgresql.org/docs/current/sql-copy.html">postgresql copy manual</a>.</p>
+<pre><code class="language-sql">insert into onnxsets (onnxfile ) values (pg_read_binary_file('/home/postgres/resnet50_Opset16.onnx')::bytea);
+\copy (select onnxfile from onnxsets where id = 8) to '/home/postgres/testonnx.onnx' (FORMAT binary) ;
+</code></pre>
+</li>
+<li>
+<p>Those information destroy the readability of ONNX file, such as in <a href="https://netron.app/">https://netron.app/</a> we get the error for reading returned ONNX file from postgresql.</p>
+<pre><code>Error loading model. Unsupported file content (5047434f50590aff0d0a000000000000) for extension '.onnx'.
+</code></pre>
+</li>
+<li>
+<p>Tried  <a href="https://github.com/csimsek/pgsql-fio/">pgsql-fio extenation</a>, still does not work.  Up to now, I still do not find ang way to get rid of those header and footer information.</p>
+</li>
+</ul>
+<h3 id="todo-with-postgresql-blob--attribute"><a class="header" href="#todo-with-postgresql-blob--attribute">TODO with postgresql BLOB  attribute</a></h3>
+<h2 id="todo-use-mongodb"><a class="header" href="#todo-use-mongodb">TODO use MongoDB</a></h2>
+<h2 id="todo-use-localhost-file-system"><a class="header" href="#todo-use-localhost-file-system">TODO use localhost file system</a></h2>
+<p>If we do not benefit enough for performance with saving ONNX in database, we can save ONNX file in localhost file system with a unique name, and then save this path + unique name in postgresql as string.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="robustness"><a class="header" href="#robustness">Robustness</a></h1>
 <h2 id="poisoning-attack-problem"><a class="header" href="#poisoning-attack-problem">Poisoning attack problem</a></h2>
 <p>If they are poisoned ONNX files has been pushed into the ONNX pool, validation data can select them out.</p>
