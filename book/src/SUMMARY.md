@@ -2,7 +2,7 @@
 
 - [Introduction](./Introduction.md)
     - [Function](./Function.md)
-    - [Initialization](./Introduction.md)
+    - [Initialization](./Initialization.md)
 
 - [Development](./Development.md)
     - [Interface](./Interface.md)
