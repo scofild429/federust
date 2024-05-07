@@ -183,6 +183,8 @@
 <p>Our three modules must be deployed in different ports. They communicate with http requests.</p>
 <h2 id="serverless-webassembly"><a class="header" href="#serverless-webassembly">Serverless WebAssembly</a></h2>
 <p>The Interface module will be implemented with Vue and TS, Client module and Server module will be wrote in RUST at first, and the function from RUST will be compiled into WebAssembly and exposed to TS.</p>
+<p>For this implementation, we will compile all the functions in client and server module into WebAssembly, and expose them to interface module with WebAssembly. In this way we can call all the funcions from interface module as serverless request.</p>
+<p>A big question mark is, do all dependencies we need support WebAssemly?</p>
 <p>Because of the rich ecosystem of Python for AI, we want allow our system also be able to run Python code, for training and ONNX pool aggregation. We have two options, compile Python into WebAssembly and call python from Rust with Foreign Function Interface. Which of them works and how they performance comes later.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="function"><a class="header" href="#function">Function</a></h1>
 <p>This chapter only describes the function of learning part. They are all marked to the corresponding part in archtechture graph.</p>
@@ -247,8 +249,14 @@ wasm-pack build
 </ul>
 </li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="interface-module"><a class="header" href="#interface-module">Interface module</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="restapi-or-webassembly"><a class="header" href="#restapi-or-webassembly">RestAPI or WebAssembly</a></h1>
+<p>As the fundamental question of this project, we have to decide that how to communicate between different module, i.e., interface, client and server. Client has to send data to postgressql for authentication, but there is I have to switch from Webassembly to RestAPI. Because Webassembly does NOT support sending postgressql request, in our case, with sqlx.</p>
+<h2 id="interface-module"><a class="header" href="#interface-module">interface module</a></h2>
+<h2 id="client-module"><a class="header" href="#client-module">client module</a></h2>
+<h2 id="server-module"><a class="header" href="#server-module">server module</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="interface-module-1"><a class="header" href="#interface-module-1">Interface module</a></h1>
 <p>We are going to use Vue with Typescript  and bootstrap to help us build our interface module. Interface module interacts with client module and agency module through Rest API OR Webassembly. Users register at first, after login through authentication, create project, assign authorization, then users can start their project.</p>
+<h2 id="api-endpoints"><a class="header" href="#api-endpoints">API endpoints</a></h2>
 <ul>
 <li>Register :: A1</li>
 <li>Login  :: B1</li>
@@ -261,8 +269,15 @@ wasm-pack build
 <li>Run ONNX pool selection :: F3</li>
 <li>Expose Trusted ONNX for downloading :: F4</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="client-module"><a class="header" href="#client-module">Client module</a></h1>
-<h2 id="auth-part"><a class="header" href="#auth-part">Auth part</a></h2>
+<h2 id="basical-function"><a class="header" href="#basical-function">Basical function</a></h2>
+<ul>
+<li>Send requests to client and server module with TS for data and render them to user.</li>
+<li>Control the visiable of url based on authentication</li>
+<li>Save local authentication data</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="client-module-1"><a class="header" href="#client-module-1">Client module</a></h1>
+<h2 id="api"><a class="header" href="#api">API</a></h2>
+<h3 id="auth-part"><a class="header" href="#auth-part">Auth part</a></h3>
 <ol>
 <li>A1 -&gt; create user instance, save in postgresql</li>
 <li>B1 -&gt; user authentication, verify JWT with data  from postgresql</li>
@@ -276,7 +291,7 @@ wasm-pack build
 <li>In Client module, different user in the same project do exactly the same thing</li>
 <li>All user can push their updated ONNX(after training) to Agency module</li>
 </ol>
-<h2 id="learning-part"><a class="header" href="#learning-part">learning part</a></h2>
+<h3 id="learning-part"><a class="header" href="#learning-part">Learning part</a></h3>
 <p>Will be implemented in program languages, such as python, Golang, C... . Those program languages can by called by rust with Foreign Function Interface.</p>
 <ul>
 <li>D1 -&gt; training the model with local data
@@ -289,7 +304,11 @@ wasm-pack build
 </li>
 <li>E1 -&gt; push the updated ONNX file in Client module to Agency module.</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="server-module"><a class="header" href="#server-module">Server module</a></h1>
+<h2 id="function-1"><a class="header" href="#function-1">Function</a></h2>
+<ul>
+<li>send SQL requests.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="server-module-1"><a class="header" href="#server-module-1">Server module</a></h1>
 <p>this module will be wrote totally in Rust</p>
 <ul>
 <li>

@@ -1,5 +1,7 @@
 # Client module
-## Auth part
+
+## API
+### Auth part
 1. A1 -> create user instance, save in postgresql
 2. B1 -> user authentication, verify JWT with data  from postgresql
 3. C1 -> create a project in Client module
@@ -12,7 +14,7 @@
   1. In Client module, different user in the same project do exactly the same thing
   2. All user can push their updated ONNX(after training) to Agency module
   
-## learning part
+### Learning part
 Will be implemented in program languages, such as python, Golang, C... . Those program languages can by called by rust with Foreign Function Interface.
 
 - D1 -> training the model with local data
@@ -22,3 +24,6 @@ Will be implemented in program languages, such as python, Golang, C... . Those p
   - if replace the ONNX file in place
 - E1 -> push the updated ONNX file in Client module to Agency module.
 
+
+## Function
+- send SQL requests.

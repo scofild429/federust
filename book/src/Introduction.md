@@ -12,5 +12,9 @@ Our three modules must be deployed in different ports. They communicate with htt
 ## Serverless WebAssembly
 The Interface module will be implemented with Vue and TS, Client module and Server module will be wrote in RUST at first, and the function from RUST will be compiled into WebAssembly and exposed to TS.
 
+For this implementation, we will compile all the functions in client and server module into WebAssembly, and expose them to interface module with WebAssembly. In this way we can call all the funcions from interface module as serverless request.
+
+A big question mark is, do all dependencies we need support WebAssemly?
+
 
 Because of the rich ecosystem of Python for AI, we want allow our system also be able to run Python code, for training and ONNX pool aggregation. We have two options, compile Python into WebAssembly and call python from Rust with Foreign Function Interface. Which of them works and how they performance comes later.

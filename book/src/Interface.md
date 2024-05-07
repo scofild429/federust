@@ -1,6 +1,8 @@
 # Interface module
 We are going to use Vue with Typescript  and bootstrap to help us build our interface module. Interface module interacts with client module and agency module through Rest API OR Webassembly. Users register at first, after login through authentication, create project, assign authorization, then users can start their project.
 
+## API endpoints
+
 - Register :: A1
 - Login  :: B1
 - Create project and authorization assignment :: C1
@@ -11,3 +13,11 @@ We are going to use Vue with Typescript  and bootstrap to help us build our inte
 - ONNX pool configuration :: F2
 - Run ONNX pool selection :: F3
 - Expose Trusted ONNX for downloading :: F4
+
+
+## Basical function
+ - Send requests to client and server module with TS for data and render them to user.
+ - Control the visiable of url based on authentication
+ - Save local authentication data
+
+

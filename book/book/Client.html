@@ -174,7 +174,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="client-module"><a class="header" href="#client-module">Client module</a></h1>
-<h2 id="auth-part"><a class="header" href="#auth-part">Auth part</a></h2>
+<h2 id="api"><a class="header" href="#api">API</a></h2>
+<h3 id="auth-part"><a class="header" href="#auth-part">Auth part</a></h3>
 <ol>
 <li>A1 -&gt; create user instance, save in postgresql</li>
 <li>B1 -&gt; user authentication, verify JWT with data  from postgresql</li>
@@ -188,7 +189,7 @@
 <li>In Client module, different user in the same project do exactly the same thing</li>
 <li>All user can push their updated ONNX(after training) to Agency module</li>
 </ol>
-<h2 id="learning-part"><a class="header" href="#learning-part">learning part</a></h2>
+<h3 id="learning-part"><a class="header" href="#learning-part">Learning part</a></h3>
 <p>Will be implemented in program languages, such as python, Golang, C... . Those program languages can by called by rust with Foreign Function Interface.</p>
 <ul>
 <li>D1 -&gt; training the model with local data
@@ -200,6 +201,10 @@
 </ul>
 </li>
 <li>E1 -&gt; push the updated ONNX file in Client module to Agency module.</li>
+</ul>
+<h2 id="function"><a class="header" href="#function">Function</a></h2>
+<ul>
+<li>send SQL requests.</li>
 </ul>
 
                     </main>
