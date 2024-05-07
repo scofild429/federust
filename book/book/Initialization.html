@@ -174,44 +174,31 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="project-initialization"><a class="header" href="#project-initialization">Project initialization</a></h1>
-<ul>
-<li>
-<p>book</p>
+<h2 id="book-for-development"><a class="header" href="#book-for-development">Book for development</a></h2>
 <pre><code class="language-sh">mdbook init book
 mdbook build
 </code></pre>
-<p>for development manual and API implementation</p>
-</li>
-<li>
-<p>interface</p>
+<pre><code>for development manual and API implementation
+</code></pre>
+<h2 id="interface-module"><a class="header" href="#interface-module">Interface module</a></h2>
 <pre><code class="language-sh">npm create vite@latest
 </code></pre>
 <p>user interface implementation with bootstrap. Wasm libraries will be imported as dependencies and be called with TS.</p>
-</li>
-<li>
-<p>liberal-federated-learning</p>
+<h2 id="liberal-federated-learning"><a class="header" href="#liberal-federated-learning">Liberal-federated-learning</a></h2>
 <pre><code class="language-sh">cargo insatall wasm-pack
 cargo insatall cargo-generate
 cargo generate --git https://github.com/rustwasm/wasm-pack-template
 wasm-pack build
 </code></pre>
 <p>call client and server API within workspace, build to WebAssembly for interface.</p>
-<ul>
-<li>
-<p>client-module</p>
+<h3 id="client-module"><a class="header" href="#client-module">Client-module</a></h3>
 <pre><code class="language-sh">cargo new client-module
 </code></pre>
 <p>client module API implementation</p>
-</li>
-<li>
-<p>server-module</p>
+<h3 id="server-module"><a class="header" href="#server-module">Server-module</a></h3>
 <pre><code class="language-sh">cargo new server-module
 </code></pre>
 <p>client module API implementation</p>
-</li>
-</ul>
-</li>
-</ul>
 
                     </main>
 
