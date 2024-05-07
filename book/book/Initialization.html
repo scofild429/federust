@@ -184,6 +184,13 @@ mdbook build
 <pre><code class="language-sh">npm create vite@latest
 </code></pre>
 <p>user interface implementation with bootstrap. Wasm libraries will be imported as dependencies and be called with TS.</p>
+<h2 id="database"><a class="header" href="#database">Database</a></h2>
+<p>we use sqlx-cli for migration. .env will be automatically loaded for sqlx-cli commands.</p>
+<pre><code class="language-sh">sqlx create database
+sqlx migrate add -r user
+sqlx migrate run 
+sqlx migrate revert
+</code></pre>
 <h2 id="liberal-federated-learning"><a class="header" href="#liberal-federated-learning">Liberal-federated-learning</a></h2>
 <pre><code class="language-sh">cargo insatall wasm-pack
 cargo insatall cargo-generate

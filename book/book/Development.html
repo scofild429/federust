@@ -173,11 +173,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="restapi-or-webassembly"><a class="header" href="#restapi-or-webassembly">RestAPI or WebAssembly</a></h1>
-<p>As the fundamental question of this project, we have to decide that how to communicate between different module, i.e., interface, client and server. Client has to send data to postgressql for authentication, but there is I have to switch from Webassembly to RestAPI. Because Webassembly does NOT support sending postgressql request, in our case, with sqlx.</p>
-<h2 id="interface-module"><a class="header" href="#interface-module">interface module</a></h2>
-<h2 id="client-module"><a class="header" href="#client-module">client module</a></h2>
-<h2 id="server-module"><a class="header" href="#server-module">server module</a></h2>
+                        <h1 id="development-records"><a class="header" href="#development-records">Development Records</a></h1>
+<h2 id="tue-may--7-200226-2024"><a class="header" href="#tue-may--7-200226-2024">Tue May  7 20:02:26 2024</a></h2>
+<h3 id="restapi-or-webassembly"><a class="header" href="#restapi-or-webassembly">RestAPI or WebAssembly</a></h3>
+<p>As the fundamental question of this project, we have to decide that how to communicate between different module, i.e., interface, client and server. Using Restapi with http request or Serverless Webassembly for function calling. Now we are exploring Webassembly, when Client module send data to postgressql for register and authentication, we discovered that Webassembly does NOT support sending postgressql request yet.</p>
+<p>More detail, in our case, we want compose a function in client module, which will connect to postgressql and insert data into table. The same code work in pure rust project, but in our project, those code will be compiled into WebAssembly with wasm-pack. The following is the compiler error.</p>
+<pre><code>error[E0432]: unresolved import `crate::sys::IoSourceState`
+</code></pre>
+<p>There are totally 44 package that can not be refered to wasm-pack. So we have to give up WebAssembly.</p>
 
                     </main>
 

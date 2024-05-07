@@ -221,6 +221,13 @@ mdbook build
 <pre><code class="language-sh">npm create vite@latest
 </code></pre>
 <p>user interface implementation with bootstrap. Wasm libraries will be imported as dependencies and be called with TS.</p>
+<h2 id="database"><a class="header" href="#database">Database</a></h2>
+<p>we use sqlx-cli for migration. .env will be automatically loaded for sqlx-cli commands.</p>
+<pre><code class="language-sh">sqlx create database
+sqlx migrate add -r user
+sqlx migrate run 
+sqlx migrate revert
+</code></pre>
 <h2 id="liberal-federated-learning"><a class="header" href="#liberal-federated-learning">Liberal-federated-learning</a></h2>
 <pre><code class="language-sh">cargo insatall wasm-pack
 cargo insatall cargo-generate
@@ -236,12 +243,15 @@ wasm-pack build
 <pre><code class="language-sh">cargo new server-module
 </code></pre>
 <p>client module API implementation</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="restapi-or-webassembly"><a class="header" href="#restapi-or-webassembly">RestAPI or WebAssembly</a></h1>
-<p>As the fundamental question of this project, we have to decide that how to communicate between different module, i.e., interface, client and server. Client has to send data to postgressql for authentication, but there is I have to switch from Webassembly to RestAPI. Because Webassembly does NOT support sending postgressql request, in our case, with sqlx.</p>
-<h2 id="interface-module-1"><a class="header" href="#interface-module-1">interface module</a></h2>
-<h2 id="client-module-1"><a class="header" href="#client-module-1">client module</a></h2>
-<h2 id="server-module-1"><a class="header" href="#server-module-1">server module</a></h2>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="interface-module-2"><a class="header" href="#interface-module-2">Interface module</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="development-records"><a class="header" href="#development-records">Development Records</a></h1>
+<h2 id="tue-may--7-200226-2024"><a class="header" href="#tue-may--7-200226-2024">Tue May  7 20:02:26 2024</a></h2>
+<h3 id="restapi-or-webassembly"><a class="header" href="#restapi-or-webassembly">RestAPI or WebAssembly</a></h3>
+<p>As the fundamental question of this project, we have to decide that how to communicate between different module, i.e., interface, client and server. Using Restapi with http request or Serverless Webassembly for function calling. Now we are exploring Webassembly, when Client module send data to postgressql for register and authentication, we discovered that Webassembly does NOT support sending postgressql request yet.</p>
+<p>More detail, in our case, we want compose a function in client module, which will connect to postgressql and insert data into table. The same code work in pure rust project, but in our project, those code will be compiled into WebAssembly with wasm-pack. The following is the compiler error.</p>
+<pre><code>error[E0432]: unresolved import `crate::sys::IoSourceState`
+</code></pre>
+<p>There are totally 44 package that can not be refered to wasm-pack. So we have to give up WebAssembly.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="interface-module-1"><a class="header" href="#interface-module-1">Interface module</a></h1>
 <p>We are going to use Vue with Typescript  and bootstrap to help us build our interface module. Interface module interacts with client module and agency module through Rest API OR Webassembly. Users register at first, after login through authentication, create project, assign authorization, then users can start their project.</p>
 <h2 id="api-endpoints"><a class="header" href="#api-endpoints">API endpoints</a></h2>
 <ul>
@@ -262,7 +272,7 @@ wasm-pack build
 <li>Control the visiable of url based on authentication</li>
 <li>Save local authentication data</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="client-module-2"><a class="header" href="#client-module-2">Client module</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="client-module-1"><a class="header" href="#client-module-1">Client module</a></h1>
 <h2 id="api"><a class="header" href="#api">API</a></h2>
 <h3 id="auth-part"><a class="header" href="#auth-part">Auth part</a></h3>
 <ol>
@@ -295,7 +305,7 @@ wasm-pack build
 <ul>
 <li>send SQL requests.</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="server-module-2"><a class="header" href="#server-module-2">Server module</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="server-module-1"><a class="header" href="#server-module-1">Server module</a></h1>
 <p>this module will be wrote totally in Rust</p>
 <ul>
 <li>
