@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Function.html"><strong aria-hidden="true">1.1.</strong> Function</a></li><li class="chapter-item expanded "><a href="Initialization.html"><strong aria-hidden="true">1.2.</strong> Initialization</a></li></ol></li><li class="chapter-item expanded "><a href="Development.html"><strong aria-hidden="true">2.</strong> Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Interface.html"><strong aria-hidden="true">2.1.</strong> Interface</a></li><li class="chapter-item expanded "><a href="Client.html"><strong aria-hidden="true">2.2.</strong> Client</a></li><li class="chapter-item expanded "><a href="Server.html"><strong aria-hidden="true">2.3.</strong> Server</a></li><li class="chapter-item expanded "><a href="Database.html"><strong aria-hidden="true">2.4.</strong> Database</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ONNX.html"><strong aria-hidden="true">2.4.1.</strong> ONNX</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="Robustness.html"><strong aria-hidden="true">3.</strong> Robustness</a></li><li class="chapter-item expanded "><a href="Privacy.html"><strong aria-hidden="true">4.</strong> Privacy</a></li><li class="chapter-item expanded "><a href="Usecases.html"><strong aria-hidden="true">5.</strong> Usecases</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Function.html"><strong aria-hidden="true">1.1.</strong> Function</a></li><li class="chapter-item expanded "><a href="Initialization.html"><strong aria-hidden="true">1.2.</strong> Initialization</a></li></ol></li><li class="chapter-item expanded "><a href="Development.html"><strong aria-hidden="true">2.</strong> Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="WebApp.html"><strong aria-hidden="true">2.1.</strong> Web Application</a></li><li class="chapter-item expanded "><a href="Interface.html"><strong aria-hidden="true">2.2.</strong> Interface</a></li><li class="chapter-item expanded "><a href="Client.html"><strong aria-hidden="true">2.3.</strong> Client</a></li><li class="chapter-item expanded "><a href="Server.html"><strong aria-hidden="true">2.4.</strong> Server</a></li><li class="chapter-item expanded "><a href="Database.html"><strong aria-hidden="true">2.5.</strong> Database</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ONNX.html"><strong aria-hidden="true">2.5.1.</strong> ONNX</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="Robustness.html"><strong aria-hidden="true">3.</strong> Robustness</a></li><li class="chapter-item expanded "><a href="Privacy.html"><strong aria-hidden="true">4.</strong> Privacy</a></li><li class="chapter-item expanded "><a href="Usecases.html"><strong aria-hidden="true">5.</strong> Usecases</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -177,7 +177,7 @@
                         <h1 id="propose"><a class="header" href="#propose">Propose</a></h1>
 <p>This project is going to create a federated learning framework with Rust. Known for its safety, Rust provides a terrific playground for our propose. Our propose is to design a architecture, which can combine decenterlized learning and cross-Silo learning use cases. At the same time, privacy problem and poisoning attack will also be token into consideration. This project has been divided into three modules. The communication can be implemented with REST-form between different ports OR with WebAssembly.</p>
 <p><img src="./feder.png" alt=" Liberal Federated learning" /></p>
-<h1 id="implementation"><a class="header" href="#implementation">Implementation</a></h1>
+<h1 id="implementation-variante"><a class="header" href="#implementation-variante">Implementation variante</a></h1>
 <p>There are two different designs has been mentioned, RestAPI with mirco-service and serverless WebAssembly.</p>
 <h2 id="restapi-with-mirco-service"><a class="header" href="#restapi-with-mirco-service">RestAPI with mirco-service</a></h2>
 <p>Our three modules must be deployed in different ports. They communicate with http requests.</p>
@@ -186,6 +186,8 @@
 <p>For this implementation, we will compile all the functions in client and server module into WebAssembly, and expose them to interface module with WebAssembly. In this way we can call all the funcions from interface module as serverless request.</p>
 <p>A big question mark is, do all dependencies we need support WebAssemly?</p>
 <p>Because of the rich ecosystem of Python for AI, we want allow our system also be able to run Python code, for training and ONNX pool aggregation. We have two options, compile Python into WebAssembly and call python from Rust with Foreign Function Interface. Which of them works and how they performance comes later.</p>
+<h2 id="pure-rust-project-as-web-application"><a class="header" href="#pure-rust-project-as-web-application">Pure rust project as web application</a></h2>
+<p>In one rust project, the interface moudle can be rendered by template engine, client module and server module can be directly called from sub-mod. See <a href="./WebApp.html">Web Application</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="function"><a class="header" href="#function">Function</a></h1>
 <p>This chapter only describes the function of learning part. They are all marked to the corresponding part in archtechture graph.</p>
 <h2 id="a-send-request-to-initialize-onnx"><a class="header" href="#a-send-request-to-initialize-onnx">A: Send request to initialize ONNX</a></h2>
@@ -211,6 +213,13 @@
 <h2 id="i-drop-onnx-from-onnx-pool"><a class="header" href="#i-drop-onnx-from-onnx-pool">I: Drop ONNX from ONNX pool</a></h2>
 <p>Validation dataset can be used to select some bad or poisoning ONNX and drop them.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="project-initialization"><a class="header" href="#project-initialization">Project initialization</a></h1>
+<h2 id="database"><a class="header" href="#database">Database</a></h2>
+<p>we use sqlx-cli for migration. .env will be automatically loaded for sqlx-cli commands.</p>
+<pre><code class="language-sh">sqlx create database
+sqlx migrate add -r user
+sqlx migrate run 
+sqlx migrate revert
+</code></pre>
 <h2 id="book-for-development"><a class="header" href="#book-for-development">Book for development</a></h2>
 <pre><code class="language-sh">mdbook init book
 mdbook build
@@ -221,14 +230,7 @@ mdbook build
 <pre><code class="language-sh">npm create vite@latest
 </code></pre>
 <p>user interface implementation with bootstrap. Wasm libraries will be imported as dependencies and be called with TS.</p>
-<h2 id="database"><a class="header" href="#database">Database</a></h2>
-<p>we use sqlx-cli for migration. .env will be automatically loaded for sqlx-cli commands.</p>
-<pre><code class="language-sh">sqlx create database
-sqlx migrate add -r user
-sqlx migrate run 
-sqlx migrate revert
-</code></pre>
-<h2 id="liberal-federated-learning"><a class="header" href="#liberal-federated-learning">Liberal-federated-learning</a></h2>
+<h2 id="wasm-federated-learning"><a class="header" href="#wasm-federated-learning">wasm-federated-learning</a></h2>
 <pre><code class="language-sh">cargo insatall wasm-pack
 cargo insatall cargo-generate
 cargo generate --git https://github.com/rustwasm/wasm-pack-template
@@ -243,14 +245,33 @@ wasm-pack build
 <pre><code class="language-sh">cargo new server-module
 </code></pre>
 <p>client module API implementation</p>
+<h2 id="rest-federated-learning"><a class="header" href="#rest-federated-learning">Rest-federated-learning</a></h2>
+<pre><code class="language-sh">cargo new rest-federated-learning
+</code></pre>
+<p>with database configuation</p>
+<h2 id="app-federated-learning"><a class="header" href="#app-federated-learning">App-federated-learning</a></h2>
+<pre><code class="language-sh">cargo new app-federated-learning
+</code></pre>
+<p>with database configuation</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development-records"><a class="header" href="#development-records">Development Records</a></h1>
 <h2 id="tue-may--7-200226-2024"><a class="header" href="#tue-may--7-200226-2024">Tue May  7 20:02:26 2024</a></h2>
-<h3 id="restapi-or-webassembly"><a class="header" href="#restapi-or-webassembly">RestAPI or WebAssembly</a></h3>
+<ul>
+<li>RestAPI or WebAssembly</li>
+</ul>
 <p>As the fundamental question of this project, we have to decide that how to communicate between different module, i.e., interface, client and server. Using Restapi with http request or Serverless Webassembly for function calling. Now we are exploring Webassembly, when Client module send data to postgressql for register and authentication, we discovered that Webassembly does NOT support sending postgressql request yet.</p>
 <p>More detail, in our case, we want compose a function in client module, which will connect to postgressql and insert data into table. The same code work in pure rust project, but in our project, those code will be compiled into WebAssembly with wasm-pack. The following is the compiler error.</p>
 <pre><code>error[E0432]: unresolved import `crate::sys::IoSourceState`
 </code></pre>
 <p>There are totally 44 package that can not be refered to wasm-pack. So we have to give up WebAssembly.</p>
+<h2 id="wed-may--8-111353-2024"><a class="header" href="#wed-may--8-111353-2024">Wed May  8 11:13:53 2024</a></h2>
+<ul>
+<li>Pure rust project with template engine</li>
+</ul>
+<p>Before we start Rest design(separeted fronted and backend project), I want to start the third design. All moudles are included in one single rust project, interface module is rendered by template engine, client and server module can be designed as sub-mod. Now I am going to try Tera template engine, see if this design works.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="descripation"><a class="header" href="#descripation">Descripation</a></h1>
+<p>Unlike the first two implementation variante, this project (folder: app-federated-learning) is going to implement the complete function in a single rust project. Benefits can be for the deployment and the communication between modules.</p>
+<h1 id="tera"><a class="header" href="#tera"><a href="https://github.com/Keats/tera">Tera</a></a></h1>
+<p>There are other template engine, such as <a href="https://github.com/djc/askama">askama</a>, we try Tera at first.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="interface-module-1"><a class="header" href="#interface-module-1">Interface module</a></h1>
 <p>We are going to use Vue with Typescript  and bootstrap to help us build our interface module. Interface module interacts with client module and agency module through Rest API OR Webassembly. Users register at first, after login through authentication, create project, assign authorization, then users can start their project.</p>
 <h2 id="api-endpoints"><a class="header" href="#api-endpoints">API endpoints</a></h2>
