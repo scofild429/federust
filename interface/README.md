@@ -1,39 +1,12 @@
-# interface
+# Project Frontend
+This project is designed for the implementation of interface module. With Vue and TS with Bootstrap we can easyly make a beautiful user graphical interface.
 
-This template should help get you started developing with Vue 3 in Vite.
+All the training projects in client module and hosted shared ONNX projects in server module will be presented.
 
-## Recommended IDE Setup
+For Rest design we send HTTP request from here, for Webassembly design we send function call to the compiled wasm dependence.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+## deployment
+```sh 
+npm build
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
+hosting the dist folder with web server, such as Nginx.

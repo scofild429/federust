@@ -1,0 +1,31 @@
+### test example
+GET https://httpbin.org/get
+
+
+### 
+POST http://localhost:8080/user
+Content-Type: application/json
+
+{
+    "username":"woziji",
+    "password":"superuser"
+}
+
+
+### 
+GET http://localhost:8080/auth
+Content-Type: application/json
+Authorization: Basic woziji:superuser
+
+
+###
+POST http://localhost:8080/article
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MX0.17itMtCzPavgIPt0OaPMPEZJiwASqDUppyY5u76GZEE
+
+{
+    "title":"first article about rust",
+    "content":"Rust is great for web development"
+
+}
+

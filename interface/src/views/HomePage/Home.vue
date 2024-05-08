@@ -49,7 +49,7 @@
               data-bs-target="#home-collapse2"
               aria-expanded="true"
             >
-              <h3>Inventory</h3>
+              <h3>Client module</h3>
             </button>
 	    <br/>
 	    <br/>
@@ -64,7 +64,7 @@
 		</li>
 		<router-link to="/products" class="link-dark rounded">
 		  <button class="rounded-circle btn-success navbar-brand dropdown-item">
-		    <h4>Inventory2 </h4>
+		    <h4>Server module </h4>
 		  </button>
 		</router-link>				
               </ul>
