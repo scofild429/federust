@@ -1,5 +1,14 @@
 # Project initialization
 
+## Database
+we use sqlx-cli for migration. .env will be automatically loaded for sqlx-cli commands.
+```sh
+sqlx create database
+sqlx migrate add -r user
+sqlx migrate run 
+sqlx migrate revert
+```
+
 ## Book for development
 ``` sh
 mdbook init book
@@ -13,17 +22,8 @@ npm create vite@latest
 ```
 user interface implementation with bootstrap. Wasm libraries will be imported as dependencies and be called with TS.
 
-## Database
-we use sqlx-cli for migration. .env will be automatically loaded for sqlx-cli commands.
-```sh
-sqlx create database
-sqlx migrate add -r user
-sqlx migrate run 
-sqlx migrate revert
-```
 
-
-## Liberal-federated-learning
+## wasm-federated-learning
  ``` sh
 cargo insatall wasm-pack
 cargo insatall cargo-generate
@@ -45,3 +45,16 @@ cargo new server-module
 ```
 client module API implementation
 
+## Rest-federated-learning
+```sh
+cargo new rest-federated-learning
+```
+with database configuation
+
+
+
+## App-federated-learning
+```sh
+cargo new app-federated-learning
+```
+with database configuation

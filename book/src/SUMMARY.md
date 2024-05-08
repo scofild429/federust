@@ -5,6 +5,7 @@
     - [Initialization](./Initialization.md)
 
 - [Development](./Development.md)
+    - [Web Application](./WebApp.md)
     - [Interface](./Interface.md)
     - [Client](./Client.md)
     - [Server](./Server.md)

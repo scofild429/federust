@@ -3,7 +3,7 @@ This project is going to create a federated learning framework with Rust. Known 
 
 ![ Liberal Federated learning](./feder.png)
 
-# Implementation
+# Implementation variante
 There are two different designs has been mentioned, RestAPI with mirco-service and serverless WebAssembly.
 
 ## RestAPI with mirco-service
@@ -18,3 +18,6 @@ A big question mark is, do all dependencies we need support WebAssemly?
 
 
 Because of the rich ecosystem of Python for AI, we want allow our system also be able to run Python code, for training and ONNX pool aggregation. We have two options, compile Python into WebAssembly and call python from Rust with Foreign Function Interface. Which of them works and how they performance comes later.
+
+## Pure rust project as web application
+In one rust project, the interface moudle can be rendered by template engine, client module and server module can be directly called from sub-mod. See [Web Application](./WebApp.md).
