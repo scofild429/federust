@@ -3,8 +3,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ProjectRegisterForm {
     pub name: String,
-    pub imageurl: String,
-    pub profile: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

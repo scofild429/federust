@@ -11,7 +11,7 @@ pub fn app_config(config: &mut web::ServiceConfig) {
             .service(web::resource("/").route(web::get().to(get_all_project)))
             .service(web::resource("/register").route(web::get().to(register_project)))
             .service(
-                web::resource("/register-post").route(web::post().to(handler_register_project)),
+                web::resource("/register-project").route(web::post().to(handler_register_project)),
             ),
     );
 }

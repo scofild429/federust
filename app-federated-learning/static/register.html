@@ -7,11 +7,13 @@
 
   <body>
     <h2 class="header"> Project registration </h2>
+    <h2 class="header"> {{Book.title}} </h2>
+    <h2 class="header"> {{Book.isbn}} </h2>
     <div class="center">
-      <form action="/register-project" method="post">
+      <form action="/register-project" method="POST">
 	<label for="name"> Project name</label><br/ >
 	<input type="text" name="name" id="name" value="{{current_name}}"/>
-	<label for="error"> <p style="color: red;">{{error}}</p></label><br \>
+	<label for="error"> <p style="color: red;">{{error}}</p></label><br/>
 	<button type="submit" id="button1">register</button>
       </form>
     </div>

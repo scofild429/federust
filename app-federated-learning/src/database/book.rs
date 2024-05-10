@@ -22,7 +22,7 @@ pub async fn delete(book: &Book, pool: &sqlx::PgPool) -> Result<(), Box<dyn Erro
 pub async fn book_create(book: &Book) -> Result<(), Box<dyn Error>> {
     dotenv().ok();
     let pool = sqlx::postgres::PgPool::connect(&env::var("DATABASE_URL")?).await?;
-    sqlx::migrate!("./migrations").run(&pool).await?;
+    //     sqlx::migrate!("./migrations").run(&pool).await?;
 
     let query = "INSERT INTO book (title, auther, isbn) VALUES ($1, $2, $3)";
     sqlx::query(query)
