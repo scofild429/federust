@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>  Register Project </title>
+  </head>
+
+  <body>
+    <h2 class="header"> Project registration </h2>
+    <div class="center">
+      <form action="/register-project" method="post">
+	<label for="name"> Project name</label><br/ >
+	<input type="text" name="name" id="name" value="{{current_name}}"/>
+	<label for="error"> <p style="color: red;">{{error}}</p></label><br \>
+	<button type="submit" id="button1">register</button>
+      </form>
+    </div>
+  </body>
+</html>
